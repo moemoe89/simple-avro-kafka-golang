@@ -3,23 +3,24 @@ package main
 import (
 	"bytes"
 	"encoding/json"
-	"github.com/linkedin/goavro"
-	"github.com/Shopify/sarama"
 	"log"
 	"strings"
+
+	"github.com/Shopify/sarama"
+	"github.com/linkedin/goavro"
 )
 
 type User struct {
-	ID		int		`json:"id"`
-	Name	string	`json:"name"`
+	ID   int    `json:"id"`
+	Name string `json:"name"`
 }
 
 const (
 	PRODUCER_URL string = "localhost:9092"
-	KAFKA_TOPIC string = "simple-avro-kafka-golang"
+	KAFKA_TOPIC  string = "simple-avro-kafka-golang"
 )
 
-func main(){
+func main() {
 
 	recordSchemaJSON := `
 	{
@@ -90,9 +91,9 @@ func main(){
 				var user User
 				json.Unmarshal(bytesText, &user)
 
-				log.Print("raw data : ",data)
-				log.Print("id : ",user.ID)
-				log.Print("name : ",user.Name)
+				log.Print("raw data : ", data)
+				log.Print("id : ", user.ID)
+				log.Print("name : ", user.Name)
 
 			}
 

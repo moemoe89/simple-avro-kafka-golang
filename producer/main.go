@@ -3,19 +3,19 @@ package main
 import (
 	"bytes"
 	"encoding/json"
+	"github.com/Shopify/sarama"
 	"github.com/gin-gonic/gin"
 	"github.com/linkedin/goavro"
-	"github.com/Shopify/sarama"
 	"net/http"
 	"strconv"
 	"time"
 )
 
 type Request struct {
-	Role	string `json:"role"`
-	Data	struct {
-		ID		int		`json:"id"`
-		Name	string	`json:"name"`
+	Role string `json:"role"`
+	Data struct {
+		ID   int    `json:"id"`
+		Name string `json:"name"`
 	} `json:"data"`
 }
 
@@ -23,7 +23,7 @@ var request Request
 
 const (
 	PRODUCER_URL string = "localhost:9092"
-	KAFKA_TOPIC string = "simple-avro-kafka-golang"
+	KAFKA_TOPIC  string = "simple-avro-kafka-golang"
 )
 
 func message(c *gin.Context) {
@@ -55,7 +55,7 @@ func message(c *gin.Context) {
 	`
 
 	c.Bind(&request)
-	requestMarshal,err := json.Marshal(request)
+	requestMarshal, err := json.Marshal(request)
 
 	if err != nil {
 		panic(err)
@@ -117,9 +117,9 @@ func message(c *gin.Context) {
 	producer.Input() <- msg
 
 	resp := gin.H{
-		"status": http.StatusOK,
+		"status":  http.StatusOK,
 		"message": "Message has been sent.",
-		"data": requestString,
+		"data":    requestString,
 	}
 
 	c.IndentedJSON(http.StatusOK, resp)
@@ -129,7 +129,7 @@ func message(c *gin.Context) {
 func main() {
 
 	router := gin.Default()
-	router.POST("/",message)
+	router.POST("/", message)
 	router.Run(":3000")
 
 }
