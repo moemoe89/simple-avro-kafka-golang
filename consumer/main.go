@@ -1,10 +1,17 @@
+//
+//  Practicing Avro Kafka
+//
+//  Copyright © 2016. All rights reserved.
+//
+
 package main
 
 import (
+	conf "github.com/moemoe89/simple-avro-kafka-golang/consumer/config"
+
 	"bytes"
 	"encoding/json"
 	"log"
-	"strings"
 
 	"github.com/Shopify/sarama"
 	"github.com/linkedin/goavro"
@@ -16,8 +23,7 @@ type User struct {
 }
 
 const (
-	PRODUCER_URL string = "localhost:9092"
-	KAFKA_TOPIC  string = "simple-avro-kafka-golang"
+	KAFKA_TOPIC = "simple-avro-kafka-golang"
 )
 
 func main() {
@@ -48,13 +54,7 @@ func main() {
 	}
 	`
 
-	config := sarama.NewConfig()
-	config.Producer.Partitioner = sarama.NewManualPartitioner
-	config.Consumer.Return.Errors = true
-
-	producerUrl := strings.Split(PRODUCER_URL, ",")
-
-	consumer, err := sarama.NewConsumer(producerUrl, config)
+	consumer, err := conf.InitKafkaConsumer()
 	if err != nil {
 		panic(err)
 	}

@@ -1,5 +1,5 @@
 //
-//  Practicing Kafka
+//  Practicing Avro Kafka
 //
 //  Copyright © 2016. All rights reserved.
 //

@@ -1,0 +1,5 @@
+{
+  "kafa": {
+    "addr": "localhost:9092"
+  }
+}

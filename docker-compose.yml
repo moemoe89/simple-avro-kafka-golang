@@ -1,0 +1,25 @@
+version: "3"
+services:
+  kafka:
+    image: wurstmeister/kafka
+    depends_on:
+      - zookeeper
+    ports:
+      - "9092:9092"
+    environment:
+      KAFKA_LOG_DIRS: ./kafka
+      KAFKA_BROKER_ID: 1
+      KAFKA_CREATE_TOPICS: "simple-kafka-golang:1:1"
+      KAFKA_ADVERTISED_HOST_NAME: localhost
+      KAFKA_ADVERTISED_PORT: 9092
+      KAFKA_LOG_RETENTION_HOURS: "168"
+      KAFKA_LOG_RETENTION_BYTES: "100000000"
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+
+  zookeeper:
+    image: elevy/zookeeper:latest
+    environment:
+      MYID: 1
+      SERVERS: zookeeper
+    ports:
+      - "2181:2181"

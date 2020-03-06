@@ -1,0 +1,6 @@
+{
+  "port": "8789",
+  "kafa": {
+    "addr": "localhost:9092"
+  }
+}

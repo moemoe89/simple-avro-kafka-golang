@@ -1,14 +1,23 @@
+//
+//  Practicing Avro Kafka
+//
+//  Copyright © 2016. All rights reserved.
+//
+
 package main
 
 import (
+	conf "github.com/moemoe89/simple-avro-kafka-golang/producer/config"
+
 	"bytes"
 	"encoding/json"
-	"github.com/Shopify/sarama"
-	"github.com/gin-gonic/gin"
-	"github.com/linkedin/goavro"
 	"net/http"
 	"strconv"
 	"time"
+
+	"github.com/gin-gonic/gin"
+	"github.com/linkedin/goavro"
+	"github.com/Shopify/sarama"
 )
 
 type Request struct {
@@ -22,8 +31,8 @@ type Request struct {
 var request Request
 
 const (
-	PRODUCER_URL string = "localhost:9092"
-	KAFKA_TOPIC  string = "simple-avro-kafka-golang"
+	PRODUCER_URL = "localhost:9092"
+	KAFKA_TOPIC  = "simple-avro-kafka-golang"
 )
 
 func message(c *gin.Context) {
@@ -91,11 +100,7 @@ func message(c *gin.Context) {
 
 	dataString := string(actual)
 
-	config := sarama.NewConfig()
-	config.Producer.Retry.Max = 5
-	config.Producer.RequiredAcks = sarama.WaitForAll
-	brokers := []string{PRODUCER_URL}
-	producer, err := sarama.NewAsyncProducer(brokers, config)
+	producer, err := conf.InitKafkaProducer()
 	if err != nil {
 		panic(err)
 	}
@@ -123,13 +128,10 @@ func message(c *gin.Context) {
 	}
 
 	c.IndentedJSON(http.StatusOK, resp)
-
 }
 
 func main() {
-
 	router := gin.Default()
 	router.POST("/", message)
-	router.Run(":3000")
-
+	router.Run(":"+conf.Configuration.Port)
 }
